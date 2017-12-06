@@ -2,12 +2,9 @@
 
  <div class="row">
  	<div class="col-md-8">
- 		<h2>Your tweets</h2>
+ 		<h2>Your Lines</h2>
  		<?php if ($_SESSION['id']) displayTweets('yourtweets'); 
- 			  else {
- 			  	echo "Login first to see your tweets!"; 
- 			  }
-
+ 			  
  		?>
  	</div>
   	<div class="col-md-4">

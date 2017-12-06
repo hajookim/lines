@@ -18,15 +18,20 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="?page=timeline">Your timeline</a>
+    <?php 
+        if ($_SESSION['id']) {
+            echo '<li class="nav-item">
+            <a class="nav-link" id="timelineLink" href="?page=timeline">Your timeline</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="?page=yourtweets">Your Lines</a>
+        <a class="nav-link" id="yourLinesLink" href="?page=yourtweets">Your Lines</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="?page=publicprofiles">Public Profiles</a>
-      </li>
+        <a class="nav-link" id="followersLink" href="?page=publicprofiles">Followers</a>
+      </li>';
+        }
+      ?>
+      
     </ul>
     <div class="form-inline my-2 my-lg-0"> 
     	<?php if ($_SESSION['id']) { ?> 

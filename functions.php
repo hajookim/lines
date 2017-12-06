@@ -38,7 +38,7 @@
 	function displayTweets($type) {
 		global $link; 
 		if ($type == 'public') {
-		
+			$whereClause = ""; 
 		} else if ($type == 'isFollowing') {
 			$query = "SELECT * FROM isFollowing WHERE follower = ".mysqli_real_escape_string($link, $_SESSION['id']);
 			$result = mysqli_query($link, $query);
@@ -69,7 +69,7 @@
 			$userQuery = "SELECT * FROM users WHERE id = ".mysqli_real_escape_string($link, $type)." LIMIT 1"; 
 			$userQueryResult = mysqli_query($link, $userQuery); 
 			$user = mysqli_fetch_assoc($userQueryResult); 
-			echo "<h2>".mysqli_real_escape_string($link, $user['username'])."'s Tweets</h2>"; 
+			echo "<h2>".mysqli_real_escape_string($link, $user['username'])."'s Lines</h2>"; 
 			$whereClause = "WHERE userid = ". mysqli_real_escape_string($link, $type); 
 			$whereClause .= " AND anonymous = 0"; 
 		}
@@ -78,10 +78,7 @@
 		
 		$result = mysqli_query($link, $query); 
 		if (mysqli_num_rows($result) == 0) {
-			echo "There are no tweets to display";
-			if ($type == 'yourtweets' && !$_SESSION['id']) {
-				echo "Please login first to see your tweets!"; 
-			}
+			echo "There are no lines to display";
 		} else {
 			while ($row = mysqli_fetch_assoc($result)) {
 				$userQuery = "SELECT * FROM users WHERE id = ".mysqli_real_escape_string($link, $row['userid'])." LIMIT 1"; 
@@ -93,7 +90,7 @@
 					echo "<div class='tweet' data-tweetId='".$row['id']."'> <p><a href='?page=publicprofiles&userid=".$user['id']."'>".$user['username']." </a><span class='time'>".time_since(time() - strtotime($row['datetime']))." ago</span>:</p>"; 
 				}
 				echo "<p>".$row['tweet']."</p>";
-				if ($type != 'yourtweets' && $row['userid'] != $_SESSION['id'] && $_SESSION['id']) {
+				if ($type != 'yourtweets' && $row['userid'] != $_SESSION['id'] && $_SESSION['id'] && !$row['anonymous']) {
 					echo "<p><a href='#' class='toggleFollow' data-userId='".$row['userid']."'>";
 					$isFollowingQuery = "SELECT * FROM isFollowing WHERE follower = ".mysqli_real_escape_string($link, $_SESSION['id'])." AND isFollowing = ". mysqli_real_escape_string($link, $row['userid'])." LIMIT 1";
 					$isFollowingQueryResult = mysqli_query($link, $isFollowingQuery);
@@ -147,12 +144,21 @@
   		</div>'; 
 		}
 	}
-	function displayUsers() {
+	function displayFollowers() {
 		global $link; 
-		$query = "SELECT * FROM users ORDER BY username"; 
+		$query = "SELECT * FROM isFollowing WHERE isFollowing = ".mysqli_real_escape_string($link, $_SESSION['id']); 
 		$result = mysqli_query($link, $query); 
+		if (!$_SESSION['id']) {
+			echo "<p>Login first to see your followers</p>";
+		}
+		else if (mysqli_num_rows($result) == 0) {
+			echo "<p>There are no users to display. Start writing to gain followers!</p>";
+		}
 		while ($row = mysqli_fetch_assoc($result)) {
-			echo "<p><a href='?page=publicprofiles&userid=".$row['id']."'>".$row['username']."</a></p>";
+			$userQuery = "SELECT * FROM users WHERE id = ".mysqli_real_escape_string($link, $row['follower'])." LIMIT 1"; 
+			$userQueryResult = mysqli_query($link, $userQuery); 
+			$user = mysqli_fetch_assoc($userQueryResult); 
+			echo "<p><a href='?page=publicprofiles&userid=".$row['follower']."'>".$user['username']."</a></p>";
 		}
 	}
 ?>
