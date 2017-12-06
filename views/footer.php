@@ -67,7 +67,7 @@
 				data: "email=" + $("#email").val() + "&password=" + $("#password").val() + "&username=" + $("#username").val() + "&loginActive=" + $("#loginActive").val(),
 				success: function(result) {
 					if (result == "1") {
-						window.location.assign("http://jadekim-com.stackstaging.com/content/12-twitter/");
+						window.location.assign("http://jadekim-com.stackstaging.com/");
 					} else {
 						$("#loginAlert").html(result).show(); 
 					}
@@ -95,26 +95,27 @@
 			$.ajax({
 				type: "POST",
 				url: "actions.php?action=postTweet", 
-				data: "tweetContent=" + $("#tweetContent").val(),
+				data: "tweetContent=" + $("#tweetContent").val() + "&postAnonymous=" + $("#postAno").prop('checked'), 
 				success: function(result) {
 					if (result == "1") {
 						$("#tweetSuccess").show();
 						$("#tweetFail").hide(); 
+						$("#tweetContent").val(''); 
 					} else if (result != "") {
-						$("#tweetFail").html(result).show(); 
+						$("#tweetFail").html("There was an error posting your line - please try again").show(); 
 						$("#tweetSuccess").hide(); 
 					}
 				}
 			})
 		});
-		$("#deleteTweet").click(function() {
+		$(".deleteTweet").click(function() {
 			var id = $(this).attr("data-tweetId");
 			$.ajax({
 				type: "POST",
 				url: "actions.php?action=deleteTweet", 
 				data: "tweetId=" + $(this).attr("data-tweetId"),
 				success: function(result) {
-					alert(result); 
+					$("div[data-tweetId='" + id + "']").hide(); 
 				}
 			})
 		});

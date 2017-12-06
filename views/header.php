@@ -7,14 +7,14 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <link rel="stylesheet" href="http://jadekim-com.stackstaging.com/content/12-twitter/styles.css"
+    <link rel="stylesheet" href="http://jadekim-com.stackstaging.com/styles.css"
   </head>
   <body>
   	<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <a class="navbar-brand" href="http://jadekim-com.stackstaging.com/content/12-twitter/">Twitter</a>
+  <a class="navbar-brand" href="?page=home">Lines</a>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
@@ -22,7 +22,7 @@
         <a class="nav-link" href="?page=timeline">Your timeline</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="?page=yourtweets">Your tweets</a>
+        <a class="nav-link" href="?page=yourtweets">Your Lines</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="?page=publicprofiles">Public Profiles</a>

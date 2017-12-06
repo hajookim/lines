@@ -74,7 +74,10 @@
 			echo "Your tweet is too long!"; 
 		} else {
 			mysqli_query($link, "INSERT INTO tweets (tweet, userid, `datetime`) VALUES ('".mysqli_real_escape_string($link, $_POST['tweetContent'])."', ".mysqli_real_escape_string($link, $_SESSION['id']).", NOW())");
-			echo mysqli_error($link); 
+			if ($_POST['postAnonymous'] == "true") {
+				$query = "UPDATE tweets SET anonymous = 1 WHERE id = ".mysqli_insert_id($link);
+				mysqli_query($link, $query); 
+			}
 			echo "1";  
 		}
 	}
