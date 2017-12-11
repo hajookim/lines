@@ -69,6 +69,7 @@
 					if (result == "1") {
 						window.location.assign("http://jadekim-com.stackstaging.com/");
 					} else {
+						//alert("what"); 
 						$("#loginAlert").html(result).show(); 
 					}
 				}
@@ -101,6 +102,7 @@
 						$("#tweetSuccess").show();
 						$("#tweetFail").hide(); 
 						$("#tweetContent").val(''); 
+						window.location.assign("http://jadekim-com.stackstaging.com/");
 					} else if (result != "") {
 						$("#tweetFail").html("There was an error posting your line - please try again").show(); 
 						$("#tweetSuccess").hide(); 

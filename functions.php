@@ -1,6 +1,6 @@
 <?php
 	session_start(); 
-
+	
 	if (mysqli_connect_errno()) {
 		print_R(mysqli_connect_error()); 
 		exit();
@@ -84,13 +84,13 @@
 				$userQueryResult = mysqli_query($link, $userQuery); 
 				$user = mysqli_fetch_assoc($userQueryResult); 
 				if ($_SESSION['id'] == "10" && $row['anonymous']) {
-					echo "<div class='tweet' data-tweetId='".$row['id']."'> <p><a href='?page=publicprofiles&userid=".$user['id']."'>".$user['username']." (Anonymous) </a><span class='time'>".time_since(time() - strtotime($row['datetime']))." ago</span>:</p>"; 
+					echo "<div class='tweet' data-tweetId='".$row['id']."'> <p><a href='?page=publicprofiles&userid=".$user['id']."'>".$user['username']." (Anonymous) </a><span class='time'> ".time_since(time() - strtotime($row['datetime']))." ago</span>:</p>"; 
 				}
 				else if ($type == 'public' && $row['anonymous']) {
-					echo "<div class='tweet' data-tweetId='".$row['id']."'><p>Anonymous <span class='time'>".time_since(time() - strtotime($row['datetime']))." ago</span>:</p>";
+					echo "<div class='tweet' data-tweetId='".$row['id']."'><p>Anonymous <span class='time'> ".time_since(time() - strtotime($row['datetime']))." ago</span>:</p>";
 				}  
 				else {
-					echo "<div class='tweet' data-tweetId='".$row['id']."'> <p><a href='?page=publicprofiles&userid=".$user['id']."'>".$user['username']."</a><span class='time'>".time_since(time() - strtotime($row['datetime']))." ago</span>:</p>"; 
+					echo "<div class='tweet' data-tweetId='".$row['id']."'> <p><a href='?page=publicprofiles&userid=".$user['id']."'>".$user['username']."</a><span class='time'> ".time_since(time() - strtotime($row['datetime']))." ago</span>:</p>"; 
 				}
 				echo "<p>".$row['tweet']."</p>";
 				if ($type != 'yourtweets' && $row['userid'] != $_SESSION['id'] && $_SESSION['id'] && !$row['anonymous']) {
