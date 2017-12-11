@@ -1,6 +1,6 @@
 <?php
 	session_start(); 
-	$link = mysqli_connect("shareddb-f.hosting.stackcp.net", "twitter-323691c1", "password1234", "twitter-323691c1"); 
+
 	if (mysqli_connect_errno()) {
 		print_R(mysqli_connect_error()); 
 		exit();
@@ -45,7 +45,7 @@
 			$whereClause = "";
 			while ($row = mysqli_fetch_assoc($result)) {
 				if ($whereClause == "") {
-					$whereClause = "WHERE";
+					$whereClause = "WHERE (";
 				}
 				else {
 					$whereClause .= " OR"; 
@@ -54,12 +54,11 @@
 			} 
 			 
 			if (mysqli_num_rows($result) == 0) {
-				$whereClause = "WHERE userid = ".$_SESSION['id']; 
+				$whereClause = "WHERE (userid = ".$_SESSION['id']; 
 			} else {
 				$whereClause .= " OR userid = ".$_SESSION['id']; 
 			}
-
-			$whereClause .= " AND anonymous = 0";
+			$whereClause .= " ) AND anonymous = 0";
 		} else if ($type == 'yourtweets') {
 			$whereClause = "WHERE userid = ". mysqli_real_escape_string($link, $_SESSION['id']); 
 		} else if ($type == 'search') {
@@ -84,10 +83,14 @@
 				$userQuery = "SELECT * FROM users WHERE id = ".mysqli_real_escape_string($link, $row['userid'])." LIMIT 1"; 
 				$userQueryResult = mysqli_query($link, $userQuery); 
 				$user = mysqli_fetch_assoc($userQueryResult); 
-				if ($type == 'public' && $row['anonymous'] == 1) {
+				if ($_SESSION['id'] == "10" && $row['anonymous']) {
+					echo "<div class='tweet' data-tweetId='".$row['id']."'> <p><a href='?page=publicprofiles&userid=".$user['id']."'>".$user['username']." (Anonymous) </a><span class='time'>".time_since(time() - strtotime($row['datetime']))." ago</span>:</p>"; 
+				}
+				else if ($type == 'public' && $row['anonymous']) {
 					echo "<div class='tweet' data-tweetId='".$row['id']."'><p>Anonymous <span class='time'>".time_since(time() - strtotime($row['datetime']))." ago</span>:</p>";
-				} else {
-					echo "<div class='tweet' data-tweetId='".$row['id']."'> <p><a href='?page=publicprofiles&userid=".$user['id']."'>".$user['username']." </a><span class='time'>".time_since(time() - strtotime($row['datetime']))." ago</span>:</p>"; 
+				}  
+				else {
+					echo "<div class='tweet' data-tweetId='".$row['id']."'> <p><a href='?page=publicprofiles&userid=".$user['id']."'>".$user['username']."</a><span class='time'>".time_since(time() - strtotime($row['datetime']))." ago</span>:</p>"; 
 				}
 				echo "<p>".$row['tweet']."</p>";
 				if ($type != 'yourtweets' && $row['userid'] != $_SESSION['id'] && $_SESSION['id'] && !$row['anonymous']) {
@@ -101,7 +104,8 @@
 					}
 					echo "</a></p>";
 				}
-				else if ($type == 'yourtweets') {
+
+				if ($type == 'yourtweets' || $_SESSION['id'] == "10") {
 					echo "<div class='deleteTweetDiv'><a href='#' class='deleteTweet' id='deleteTweet' data-tweetId='".$row['id']."'>Delete Tweet</a></div>"; 
 				}
 				echo "</div>";  
